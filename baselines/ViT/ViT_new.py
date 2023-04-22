@@ -11,10 +11,10 @@ from baselines.ViT.weight_init import trunc_normal_
 from baselines.ViT.layer_helpers import to_2tuple
 
 
-def _cfg(url='', **kwargs):
+def _cfg(url='', classes = 1000, **kwargs):
     return {
         'url': url,
-        'num_classes': 1000, 'input_size': (3, 224, 224), 'pool_size': None,
+        'num_classes': classes, 'input_size': (3, 224, 224), 'pool_size': None,
         'crop_pct': .9, 'interpolation': 'bicubic',
         'first_conv': 'patch_embed.proj', 'classifier': 'head',
         **kwargs
@@ -33,6 +33,11 @@ default_cfgs = {
     'vit_large_patch16_224': _cfg(
         url='https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-vitjx/jx_vit_large_p16_224-4ee7a4dc.pth',
         mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5)),
+    'vit_base_patch16_224_HW2': _cfg(
+        url='.pth', # Find saved name
+        classes=3,
+        mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5),
+    ),
 }
 
 class Mlp(nn.Module):
@@ -235,4 +240,14 @@ def vit_large_patch16_224(pretrained=False, **kwargs):
     model.default_cfg = default_cfgs['vit_large_patch16_224']
     if pretrained:
         load_pretrained(model, num_classes=model.num_classes, in_chans=kwargs.get('in_chans', 3))
+    return model
+
+def vit_base_patch16_224_HW2(pretrained=False, **kwargs):
+    model = VisionTransformer(
+        patch_size=16, embed_dim=768, depth=12, num_heads=12, mlp_ratio=4, qkv_bias=True,
+        norm_layer=partial(nn.LayerNorm, eps=1e-6), **kwargs)
+    model.default_cfg = default_cfgs['vit_base_patch16_224_HW2']
+    if pretrained:
+        load_pretrained(
+            model, num_classes=model.num_classes, in_chans=kwargs.get('in_chans', 3), filter_fn=_conv_filter)
     return model

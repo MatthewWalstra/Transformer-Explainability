@@ -90,8 +90,10 @@ def load_pretrained(model, cfg=None, num_classes=1000, in_chans=3, filter_fn=Non
     if cfg is None or 'url' not in cfg or not cfg['url']:
         _logger.warning("Pretrained model URL is invalid, using random initialization.")
         return
-
-    state_dict = model_zoo.load_url(cfg['url'], progress=False, map_location='cpu')
+    if "https" in cfg['url']:
+        state_dict = model_zoo.load_url(cfg['url'], progress=False, map_location='cpu')
+    else:
+        state_dict = torch.load(cfg['url'], progress=False, map_location='cpu')
 
     if filter_fn is not None:
         state_dict = filter_fn(state_dict)
