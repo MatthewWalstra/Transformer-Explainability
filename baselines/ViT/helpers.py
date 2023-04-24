@@ -136,6 +136,7 @@ def load_pretrained(model, cfg=None, num_classes=1000, in_chans=3, filter_fn=Non
             state_dict[conv1_name + '.weight'] = conv1_weight
 
     classifier_name = cfg['classifier']
+    print(f"{num_classes}, {cfg['num_classes']}")
     if num_classes == 1000 and cfg['num_classes'] == 1001:
         # special case for imagenet trained models with extra background class in pretrained weights
         classifier_weight = state_dict[classifier_name + '.weight']
