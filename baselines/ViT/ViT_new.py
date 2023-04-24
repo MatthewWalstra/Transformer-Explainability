@@ -34,7 +34,7 @@ default_cfgs = {
         url='https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-vitjx/jx_vit_large_p16_224-4ee7a4dc.pth',
         mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5)),
     'vit_base_patch16_224_HW2': _cfg(
-        url='./vit-base-abc/vit-base-patch16-224-hw2.pth', # Find saved name
+        url='/content/vit-base-abc/vit-base-patch16-224-hw2.pth', # Find saved name
         classes=3,
         mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5),
     ),
