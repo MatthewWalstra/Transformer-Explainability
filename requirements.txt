@@ -6,7 +6,6 @@ matplotlib
 opencv_python
 scikit_image
 scipy
-sklearn
 torch
 torchvision
 tqdm
